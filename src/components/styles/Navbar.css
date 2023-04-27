@@ -1,0 +1,56 @@
+/* #navbar-nav NavLink{
+
+margin: 10px;
+background-color: black;
+
+
+
+
+} */
+#logo{
+    margin-left: 1%;
+    
+    width: 25%;
+}
+#home{
+    width: 110%;
+    height: 110%;
+}
+#navb{
+    position:fixed;
+    top:0;
+    margin-bottom: 10%;
+    
+    
+}
+#nav{
+    display: inline-flexbox;
+    /* position: fixed; */
+}
+#iconos{
+    width: 110%; 
+    height: 110%;
+}
+
+#iconosc{
+ 
+    width: 35%;
+    height: 25%;
+    margin:3px;
+}
+
+#navb{
+    background-color:#1E8449;
+    width: 100%;  
+    color:white 
+}
+#calificaciones{
+    background-color: #28B463;
+    color:white;
+    border-radius: 15px;
+}
+#nombre{
+    color:white;
+    background-color: #468AFA;
+    /* border-radius: 50px; */
+}

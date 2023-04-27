@@ -1,0 +1,23 @@
+#btn #links {
+    align-content: center;
+    color: cadetblue;
+    margin: 25px;
+}
+
+#form {
+    margin: 10%;
+}
+
+#texto {
+    margin: 2%;
+}
+
+#boton {
+    align-content: center;
+    align-self: center;
+    background-color: #3377FF;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    margin-left: 15%;
+}
