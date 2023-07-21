@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import '../styles/App.css';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +10,7 @@ import { Navbar } from '../Navbar';
 const url = "https://localhost:4000/api/empresas/";
 
 class PostDev extends Component {
-    
+
     state = {
         data: [],
         modalInsertar: false,
@@ -33,7 +32,7 @@ class PostDev extends Component {
     peticionGet = () => {
         let getdeveloper = 'http://localhost:4000/developer'
         axios.get(getdeveloper).then(response => {
-            this.setState({ data: response.data['result'] });
+            this.setState({ data: response.data['developer'] });
             console.log(response)
         }).catch(error => {
             console.log(error.message);
@@ -79,7 +78,8 @@ class PostDev extends Component {
     }
 
     peticionDelete = () => {
-        axios.delete(url + this.state.form.id).then(response => {
+
+        axios.delete('http://localhost:4000/developer/' + this.state.form.id).then(response => {
             this.setState({ modalEliminar: false });
             this.peticionGet();
         })
@@ -93,10 +93,7 @@ class PostDev extends Component {
         this.setState({
             tipoModal: 'actualizar',
             form: {
-                id: empresa.id,
-                nombre: empresa.nombre,
-                pais: empresa.pais,
-                capital_bursatil: empresa.capital_bursatil
+                id: empresa.developer_id,
             }
         })
     }
@@ -122,51 +119,91 @@ class PostDev extends Component {
         const { form } = this.state;
         return (
 
-            <div className="App">
+            <div className="main">
                 <Navbar />
                 <br /><br /><br />
                 <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Desarrollador</button>
                 <br /><br />
-                <table className="table ">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Compañia</th>
-                            <th>Certificacion</th>
-                            <th>email</th>
-                            <th>phone</th>
-                            <th>pos</th>
-                            <th>Nombre del programa</th>
-                            <th>Desarrollador independiente?</th>
-                            <th>Servicios</th>
+                <div className="data">
+                    <table className="table-dev">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Compañia</th>
+                                <th>Certificacion</th>
+                                <th>email</th>
+                                <th>phone</th>
+                                <th>pos</th>
+                                <th>Nombre del programa</th>
+                                <th>Desarrollador independiente?</th>
+                                <th>Servicios</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.data.map(desarrollador => {
-                            return (
-                                <tr>
-                                    <td>{desarrollador.developer_id}</td>
-                                    <td>{desarrollador.developer_name}</td>
-                                    <td>{desarrollador.developer_company}</td>
-                                    <td>{desarrollador.certification_id}</td>
-                                    <td>{desarrollador.email}</td>
-                                    <td>{desarrollador.phone}</td>
-                                    <td>{desarrollador.pos}</td>
-                                    <td>{desarrollador.program_name}</td>
-                                    <td>{desarrollador.independent}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.data.map(desarrollador => {
+                                return (
+                                    <tr>
+                                        <td>{desarrollador.developer_id}</td>
+                                        <td>{desarrollador.developer_name}</td>
+                                        <td>{desarrollador.developer_company}</td>
+                                        <td>{desarrollador.certification_id}</td>
+                                        <td>{desarrollador.email}</td>
+                                        <td>{desarrollador.phone}</td>
+                                        <td>{desarrollador.pos}</td>
+                                        <td>{desarrollador.program_name}</td>
+                                        <td>{desarrollador.independent}</td>
 
-                                    <td>
-                                        <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
-                                        {"   "}
-                                        <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                                        <td>
+                                            <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
+                                            {"   "}
+                                            <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                    <div className="add-dev-form">
+                        <form className='form-group'>
+                        <label>ID</label>
+                        <input type="text" placeholder='Developer id'></input>
+                        <br />
+                        <label>Name</label>
+                        <input type="text" placeholder='Developer name'></input>
+                        <br />
+                        <label>Email</label>
+                        <input type="text" placeholder='Developer email'></input>
+                        <br />
+                        <label>Phone</label>
+                        <input type="text" placeholder='Developer Phone'></input>
+                        <br />
+                        <label>Certification</label>
+                        <input type="text" placeholder='Certification id'></input>
+                        <br />
+                        <label>Programa</label>
+                        <input type="text" placeholder='Program name'></input>
+                        <br />
+                        <label>Servicio</label>
+                        <input type="text" placeholder='Services'></input>
+                        <br />
+                        <label>POS?</label>
+                        <input type="checkbox"></input>
+                        <label>Independiente?</label>
+                        <input type="checkbox" ></input>
+                        <br />
+                        <label>Fecha Inicio</label>
+                        <input type="date"></input>
+                        <br />
+                        <label>Fecha Final</label>
+                        <input type="date"></input>
+                        <br />
+                        <button className="btn btn-success" onClick={() => this.peticionPost()}>Insertar</button> 
+                        </form>
+                        
+                    </div>
+                </div>
 
 
 
@@ -240,7 +277,7 @@ class PostDev extends Component {
                             <br />
                             <label htmlFor="capital_bursatil">ECRTI </label>
                             <input className="form-check-input" type="checkbox" name="developer" id="developer" onChange={this.handleChange} value={form ? form.independent : ''} />
-                            
+
 
 
                         </div>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import '../styles/App.css';
+import '../styles/integraciones.css';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCheckCircle, faEdit, faPlus, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Navbar } from '../Navbar';
 
@@ -15,6 +15,10 @@ class PostIntegration extends Component {
         data: [],
         modalInsertar: false,
         modalEliminar: false,
+        modalCompletar: false,
+        modalCertificar: false,
+        modalMenu: false,
+        dropOpen:false,
         form: {
             id: '',
             name: '',
@@ -27,10 +31,11 @@ class PostIntegration extends Component {
             cant_comercios: '',
             cant_pos: ''
         }
+        
     }
 
     peticionGet = () => {
-        let getdeveloper = 'http://localhost:4000/integration'
+        let getdeveloper = 'http://localhost:4000/developer/find/integration'
         axios.get(getdeveloper).then(response => {
             this.setState({ data: response.data['result'] });
             console.log(response)
@@ -39,6 +44,9 @@ class PostIntegration extends Component {
         })
     }
 
+    
+      
+   
     peticionPost = async () => {
         let postdeveloper = 'http://localhost:4000/developer/integration'
         console.log('llegando')
@@ -58,12 +66,12 @@ class PostIntegration extends Component {
             "start_lab_date": this.state.form.start_lab,
             "end_lab_date": this.state.form.end_lab,
             "cant_comercios": this.state.form.cant_comercios,
-            "cant_pos":this.state.form.cant_pos
+            "cant_pos": this.state.form.cant_pos
         }
         console.log(payload);
         console.log(this.state.form)
         delete this.state.form.developer_id;
-        await axios.post(postdeveloper,payload, config).then(response => {
+        await axios.post(postdeveloper, payload, config).then(response => {
             this.modalInsertar();
             this.peticionGet();
         }).catch(error => {
@@ -79,7 +87,7 @@ class PostIntegration extends Component {
     }
 
     peticionDelete = () => {
-        axios.delete(url + this.state.form.id).then(response => {
+        axios.delete("http://localhost:4000/developer/integracion/" + this.state.form.id).then(response => {
             this.setState({ modalEliminar: false });
             this.peticionGet();
         })
@@ -89,15 +97,29 @@ class PostIntegration extends Component {
         this.setState({ modalInsertar: !this.state.modalInsertar });
     }
 
-    seleccionarEmpresa = (empresa) => {
+    seleccionarEmpresa = (desarrollador) => {
         this.setState({
             tipoModal: 'actualizar',
             form: {
-                id: empresa.id,
-                nombre: empresa.nombre,
-                pais: empresa.pais,
-                capital_bursatil: empresa.capital_bursatil
+                id: desarrollador.integration_id
+
             }
+        })
+    }
+    peticionComplete = () => {
+        let url = "http://localhost:4000/developer/integracion/" + this.state.form.id + "/status/completado"
+        console.log(url)
+        axios.put(url).then(response => {
+            this.setState({ modalCompletar: false });
+            this.peticionGet();
+        })
+    }
+    peticionCertificar = () => {
+        let url = "http://localhost:4000/developer/integracion/" + this.state.form.id + "/status/certificado"
+        console.log(url)
+        axios.put(url).then(response => {
+            this.setState({ modalCertificar: false });
+            this.peticionGet();
         })
     }
 
@@ -115,31 +137,36 @@ class PostIntegration extends Component {
     componentDidMount() {
         this.peticionGet();
     }
-
+   
+  
 
     render() {
-        
+
         const { form } = this.state;
         return (
-            
-            <div className="App">
-                <Navbar/>
+
+            <div className="main">
+                <Navbar />
                 <br /><br /><br />
-                <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Integracion</button>
+                <div className='agregar'>
+                    <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}><FontAwesomeIcon icon={faPlus} /> Agregar Integracion</button>
+                </div>
+
                 <br /><br />
-                <table className="integraciones">
+                <table className="tablaIntegraciones">
+
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>ID Desarrollador</th>
+                            <th>Desarrollador</th>
                             <th>Empresa</th>
                             <th>Servicio</th>
                             <th>Status</th>
                             <th>Fecha Entrada a produccion</th>
-                            <th>Fecha Entrada a laboratorio</th>
+                            {/* <th>Fecha Entrada a laboratorio</th> */}
                             <th>Fecha finalizacion Desarrollo</th>
-                            <th>Cantidad de comercios</th>
-                            <th>Cantidad de POS</th>
+                            {/* <th>Cantidad de comercios</th> */}
+                            {/* <th>Cantidad de POS</th> */}
 
                         </tr>
                     </thead>
@@ -159,9 +186,16 @@ class PostIntegration extends Component {
                                     <td>{desarrollador.cant_pos}</td>
 
                                     <td>
-                                        <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
-                                        {"   "}
-                                        <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                        
+                                                <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
+                                                {""}
+                                                <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                                {""}
+                                                <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCompletar: true }) }}><FontAwesomeIcon icon={faCheckCircle} /></button>
+                                                {""}
+                                                <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCertificar: true }) }}><FontAwesomeIcon icon={faArrowRight} /></button>
+                                        
+
                                     </td>
                                 </tr>
                             )
@@ -188,18 +222,18 @@ class PostIntegration extends Component {
                             <br />
                             <label htmlFor="capital_bursatil">Fecha de inicio:</label>
                             <br />
-                            <input type="date" name="start_lab" step="1" min="2020-01-01" max="2024-12-31" onChange={this.handleChange} value={form ? form.start_lab : ''}/>
+                            <input type="date" name="start_lab" step="1" min="2020-01-01" max="2024-12-31" onChange={this.handleChange} value={form ? form.start_lab : ''} />
                             <br />
                             <br />
                             <label htmlFor="nombre">Fecha Certificacion:</label>
-                           
+
                             <br />
                             <input type="date" name="end_lab" step="1" min="2020-01-01" max="2024-12-31" onChange={this.handleChange} value={form ? form.end_lab : ''} />
                             <br />
                             <br />
                             <label htmlFor="nombre">Fecha entrada a produccion:</label>
                             <br />
-                            <input type="date" name="production" step="1" min="2020-01-01" max="2024-12-31" onChange={this.handleChange} value={form ? form.production : ''}/>
+                            <input type="date" name="production" step="1" min="2020-01-01" max="2024-12-31" onChange={this.handleChange} value={form ? form.production : ''} />
                             <br />
                             <br />
                             <label htmlFor="capital_bursatil">Servicio</label>
@@ -207,39 +241,39 @@ class PostIntegration extends Component {
                             <br />
                             <label htmlFor="nombre">status:</label>
                             <br />
-                            <input className="form-control" type="text" name="status" id='status' onChange={this.handleChange} value={form ? form.status : ''}/>
+                            <input className="form-control" type="text" name="status" id='status' onChange={this.handleChange} value={form ? form.status : ''} />
                             <br />
-                            <label  htmlFor="nombre">cantidad de comercios:</label>
+                            <label htmlFor="nombre">cantidad de comercios:</label>
                             <br />
-                            <input className="form-control" type="text"  name="cant_comercios" id='cant_comercios' onChange={this.handleChange} value={form ? form.cant_comercios : ''}/>
+                            <input className="form-control" type="text" name="cant_comercios" id='cant_comercios' onChange={this.handleChange} value={form ? form.cant_comercios : ''} />
                             <br />
                             <label htmlFor="nombre">cantidad de POS:</label>
                             <br />
-                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''}/>
+                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''} />
                             <br />
                             <label htmlFor="nombre">Ejecutivo de cuentas:</label>
                             <br />
-                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''}/>
+                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''} />
                             <br />
                             <label htmlFor="nombre">Comentario:</label>
                             <br />
-                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''}/>
+                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''} />
                             <br />
                             <label htmlFor="nombre">Numero de ticket:</label>
                             <br />
-                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''}/>
-                       
+                            <input className="form-control" type="text" name="cant_pos" id='cant_pos' onChange={this.handleChange} value={form ? form.cant_pos : ''} />
+
                             <br />
                             <label htmlFor="nombre">Ticket de PI: </label>
                             <input className="form-check-input" type="checkbox" name="pos" id="pos" onChange={this.handleChange} value={form ? form.pos : ''} />
-                          
+
                             <label htmlFor="nombre"> Ticket de PIA: </label>
                             <input className="form-check-input" type="checkbox" name="pos" id="pos" onChange={this.handleChange} value={form ? form.pos : ''} />
-                            
+
                             <label htmlFor="nombre"> Ticket de ITOP: </label>
                             <input className="form-check-input" type="checkbox" name="pos" id="pos" onChange={this.handleChange} value={form ? form.pos : ''} />
                             <br />
-                             {/*
+                            {/*
                             <label htmlFor="nombre">POS</label>
                             <input className="form-control" type="text" name="pos" id="pos" onChange={this.handleChange} value={form ? form.pos : ''} />
                             <br />
@@ -266,13 +300,32 @@ class PostIntegration extends Component {
 
                 <Modal isOpen={this.state.modalEliminar}>
                     <ModalBody>
-                        Estás seguro que deseas eliminar a la empresa {form && form.nombre}
+                        Estás seguro que deseas eliminar a la empresa? {form && form.nombre}
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-danger" onClick={() => this.peticionDelete()}>Sí</button>
                         <button className="btn btn-secundary" onClick={() => this.setState({ modalEliminar: false })}>No</button>
                     </ModalFooter>
                 </Modal>
+                <Modal isOpen={this.state.modalCompletar}>
+                    <ModalBody>
+                        Estás seguro que deseas pasar a completado? {form && form.nombre}
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className="btn btn-primary" onClick={() => this.peticionComplete()}>Sí</button>
+                        <button className="btn btn-secundary" onClick={() => this.setState({ modalCompletar: false })}>No</button>
+                    </ModalFooter>
+                </Modal>
+                <Modal isOpen={this.state.modalCertificar}>
+                    <ModalBody>
+                        Estás seguro que deseas pasar a certificado? {form && form.nombre}
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className="btn btn-primary" onClick={() => this.peticionCertificar()}>Sí</button>
+                        <button className="btn btn-secundary" onClick={() => this.setState({ modalCertificar: false })}>No</button>
+                    </ModalFooter>
+                </Modal>
+
             </div>
 
 

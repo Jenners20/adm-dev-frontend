@@ -8,7 +8,7 @@ export const Navbar = () => {
 
     const handleLogout = () => {
 
-        navigate('/guest', {
+        navigate('/login', {
             replace: true
         })
     }

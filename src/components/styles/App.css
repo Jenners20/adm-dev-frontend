@@ -1,41 +1,58 @@
-.App {
-    text-align: center;
-  }
+.main {
+  /* text-align: center; */
+  /* display: flex;  */
+  min-height: 10vh;
+  align-items: center;
+  /* justify-content: center;  */
+  /* background-color: aqua; */
+  /* display : flex; */
+
+}
+
+.data {
+  flex-direction: row;
+  display: flex;
+}
+
+.link-btn {
+  background: none;
+  color: white;
+  text-decoration: underline;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+}
+
+.main .table-dev {
+  align-items: center;
+ 
+  margin: 1%;
+}
+
+.add-dev-form {
+  font-size: 20px;
+  color: #000000;
   
-  .App-logo {
-    height: 40vmin;
-    pointer-events: none;
-  }
+  text-align: left;
+  float: left;
+  padding: 5px;
+  margin: 5px;
   
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
-  
-  .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .App-link {
-    color: #61dafb;
-  }
-  
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .integraciones{
-    width: 90%;
-  }
+  width: 95%;
+}
+
+.add-dev-form input {
+  font-size: 15px;
+  margin: 2px;
+  display: inline;
+}
+
+.add-dev-form label {
+  font-size:15px;
+  vertical-align: middle;
+  margin-right: 2px;
+  margin-left: 25px;
+  display: inline;
+}
