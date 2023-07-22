@@ -5,8 +5,9 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheckCircle, faEdit, faPlus, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { FormGroup, FormText, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Navbar } from '../Navbar';
+import PostIntegration2 from '../postIntegration';
 
 const url = "https://localhost:4000/api/empresas/";
 
@@ -18,7 +19,7 @@ class PostIntegration extends Component {
         modalCompletar: false,
         modalCertificar: false,
         modalMenu: false,
-        dropOpen:false,
+        dropOpen: false,
         form: {
             id: '',
             name: '',
@@ -29,9 +30,10 @@ class PostIntegration extends Component {
             start_lab: '',
             end_lab: '',
             cant_comercios: '',
-            cant_pos: ''
+            cant_pos: '',
+            file: ''
         }
-        
+
     }
 
     peticionGet = () => {
@@ -44,9 +46,13 @@ class PostIntegration extends Component {
         })
     }
 
-    
-      
-   
+    // handleFileChange = (e) => {
+    //     if (e.target.files) {
+    //         setFile(e.target.files[0]);
+    //     }
+    // };
+
+
     peticionPost = async () => {
         let postdeveloper = 'http://localhost:4000/developer/integration'
         console.log('llegando')
@@ -137,8 +143,10 @@ class PostIntegration extends Component {
     componentDidMount() {
         this.peticionGet();
     }
-   
-  
+    sendFile(file) {
+        console.log(file);
+    }
+
 
     render() {
 
@@ -149,9 +157,24 @@ class PostIntegration extends Component {
                 <Navbar />
                 <br /><br /><br />
                 <div className='agregar'>
+                <PostIntegration2/>
                     <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}><FontAwesomeIcon icon={faPlus} /> Agregar Integracion</button>
                 </div>
-
+                {/* <FormGroup>
+                    <Label for="exampleFile">
+                        File
+                    </Label>
+                    <Input
+                        id="exampleFile"
+                        name="file"
+                        type="file"
+                        value={ form.file } 
+                    />
+                    <FormText>
+                        This is some placeholder block-level help text for the above input. It‘s a bit lighter and easily wraps to a new line.
+                    </FormText>
+                </FormGroup> */}
+                <button onClick={() => { this.sendFile(form.file) }}><FontAwesomeIcon icon={faEdit} /></button>
                 <br /><br />
                 <table className="tablaIntegraciones">
 
@@ -186,15 +209,15 @@ class PostIntegration extends Component {
                                     <td>{desarrollador.cant_pos}</td>
 
                                     <td>
-                                        
-                                                <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
-                                                {""}
-                                                <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                                {""}
-                                                <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCompletar: true }) }}><FontAwesomeIcon icon={faCheckCircle} /></button>
-                                                {""}
-                                                <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCertificar: true }) }}><FontAwesomeIcon icon={faArrowRight} /></button>
-                                        
+
+                                        <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
+                                        {""}
+                                        <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                        {""}
+                                        <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCompletar: true }) }}><FontAwesomeIcon icon={faCheckCircle} /></button>
+                                        {""}
+                                        <button className="btn btn-success" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalCertificar: true }) }}><FontAwesomeIcon icon={faArrowRight} /></button>
+
 
                                     </td>
                                 </tr>

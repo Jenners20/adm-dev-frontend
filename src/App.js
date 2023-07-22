@@ -9,6 +9,7 @@ import { Navbar } from './components/Navbar';
 import PostDev from './components/screens/postDev';
 import { Login } from './components/screens/login';
 import { Register } from './components/screens/register';
+import PostIntegration2 from "./components/postIntegration";
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
@@ -26,6 +27,7 @@ function App() {
           <Route path='/desarrolladores' element={<PostDev/>} />
           <Route path='/' element={<GetDev/>} />
           <Route path='/integraciones' element={<PostIntegration/>} />
+          <Route path='/integracioness' element={<PostIntegration2/>} />
           <Route path='/login' element={<Login onFormSwitch={toggleForm}/>} />
           <Route path='/register' element={<Register onFormSwitch={toggleForm}/>} />
         </Routes>

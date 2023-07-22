@@ -3,8 +3,8 @@ import '../styles/App.css';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { faCheck, faEdit, faTrashAlt, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Button, Card, CardBody, CardColumns, CardGroup, CardSubtitle, CardText, CardTitle, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Navbar } from '../Navbar';
 
 const url = "https://localhost:4000/api/empresas/";
@@ -112,7 +112,13 @@ class PostDev extends Component {
     componentDidMount() {
         this.peticionGet();
     }
-
+    setBoolValue(value) {
+        if (value == true) {
+            return <FontAwesomeIcon icon={faCheck} />
+        } else {
+           return <FontAwesomeIcon icon={faXmark} />
+        }
+    }
 
     render() {
 
@@ -122,12 +128,53 @@ class PostDev extends Component {
             <div className="main">
                 <Navbar />
                 <br /><br /><br />
+                <p>Desarrolladores</p>
                 <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Desarrollador</button>
                 <br /><br />
                 <div className="data">
-                    <table className="table-dev">
+
+                    <CardColumns>
+                        {this.state.data.map(desarrollador => {
+                            return (
+                                <Card
+                                    className="my-2"
+                                    style={{
+                                        width: '28rem',
+                                        height: '20rem'
+                                    }}
+                                >
+                                    <CardBody>
+                                        <CardTitle tag="h5">
+                                            {desarrollador.developer_name}
+                                        </CardTitle>
+                                        <CardText>
+                                            Certificacion: {desarrollador.certification_id}
+                                            <br />
+                                            email: {desarrollador.email}
+                                            <br />
+                                            telefono: {desarrollador.phone}
+                                            <br />
+                                            POS: {this.setBoolValue(desarrollador.pos)}
+                                            <br />
+                                            Programa: {desarrollador.program_name}
+                                            <br />
+                                            Independiente: {this.setBoolValue(desarrollador.pos)}
+                                            <br />
+                                            Fecha de entrada lab: {this.setBoolValue(desarrollador.pos)}
+                                            <br />
+                                            Fecha de salida lab: {this.setBoolValue(desarrollador.pos)}
+                                        </CardText>
+                                        <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
+                                        {"   "}
+                                        <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                    </CardBody>
+                                </Card>
+                            )
+                        })}
+                    </CardColumns>
+                    {/* <table className="table-dev" border="2">
                         <thead>
-                            <tr>
+                            <tr ALIGN="center">
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Compañia</th>
@@ -136,15 +183,15 @@ class PostDev extends Component {
                                 <th>phone</th>
                                 <th>pos</th>
                                 <th>Nombre del programa</th>
-                                <th>Desarrollador independiente?</th>
-                                <th>Servicios</th>
+                                {/* <th>Desarrollador independiente?</th> */}
+                    {/* <th>Servicios</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.data.map(desarrollador => {
                                 return (
-                                    <tr>
+                                    <tr ALIGN="center">
                                         <td>{desarrollador.developer_id}</td>
                                         <td>{desarrollador.developer_name}</td>
                                         <td>{desarrollador.developer_company}</td>
@@ -153,55 +200,55 @@ class PostDev extends Component {
                                         <td>{desarrollador.phone}</td>
                                         <td>{desarrollador.pos}</td>
                                         <td>{desarrollador.program_name}</td>
-                                        <td>{desarrollador.independent}</td>
+                                        {/* <td>{desarrollador.independent}</td> */}
 
-                                        <td>
+                    {/* <td>
                                             <button className="btn btn-primary" onClick={() => { this.seleccionarEmpresa(desarrollador); this.modalInsertar() }}><FontAwesomeIcon icon={faEdit} /></button>
                                             {"   "}
                                             <button className="btn btn-danger" onClick={() => { this.seleccionarEmpresa(desarrollador); this.setState({ modalEliminar: true }) }}><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                        </td>
-                                    </tr>
+                                        </td> */}
+                    {/* </tr>
                                 )
-                            })}
-                        </tbody>
-                    </table>
+                            })} */}
+                    {/* </tbody>  */}
+                    {/* </table>  */}
                     <div className="add-dev-form">
                         <form className='form-group'>
-                        <label>ID</label>
-                        <input type="text" placeholder='Developer id'></input>
-                        <br />
-                        <label>Name</label>
-                        <input type="text" placeholder='Developer name'></input>
-                        <br />
-                        <label>Email</label>
-                        <input type="text" placeholder='Developer email'></input>
-                        <br />
-                        <label>Phone</label>
-                        <input type="text" placeholder='Developer Phone'></input>
-                        <br />
-                        <label>Certification</label>
-                        <input type="text" placeholder='Certification id'></input>
-                        <br />
-                        <label>Programa</label>
-                        <input type="text" placeholder='Program name'></input>
-                        <br />
-                        <label>Servicio</label>
-                        <input type="text" placeholder='Services'></input>
-                        <br />
-                        <label>POS?</label>
-                        <input type="checkbox"></input>
-                        <label>Independiente?</label>
-                        <input type="checkbox" ></input>
-                        <br />
-                        <label>Fecha Inicio</label>
-                        <input type="date"></input>
-                        <br />
-                        <label>Fecha Final</label>
-                        <input type="date"></input>
-                        <br />
-                        <button className="btn btn-success" onClick={() => this.peticionPost()}>Insertar</button> 
+                            <label>ID</label>
+                            <input type="text" placeholder='Developer id'></input>
+                            <br />
+                            <label>Name</label>
+                            <input type="text" placeholder='Developer name'></input>
+                            <br />
+                            <label>Email</label>
+                            <input type="text" placeholder='Developer email'></input>
+                            <br />
+                            <label>Phone</label>
+                            <input type="text" placeholder='Developer Phone'></input>
+                            <br />
+                            <label>Certification</label>
+                            <input type="text" placeholder='Certification id'></input>
+                            <br />
+                            <label>Programa</label>
+                            <input type="text" placeholder='Program name'></input>
+                            <br />
+                            <label>Servicio</label>
+                            <input type="text" placeholder='Services'></input>
+                            <br />
+                            <label>POS?</label>
+                            <input type="checkbox"></input>
+                            <label>Independiente?</label>
+                            <input type="checkbox" ></input>
+                            <br />
+                            <label>Fecha Inicio</label>
+                            <input type="date"></input>
+                            <br />
+                            <label>Fecha Final</label>
+                            <input type="date"></input>
+                            <br />
+                            <button className="btn btn-success" onClick={() => this.peticionPost()}>Insertar</button>
                         </form>
-                        
+
                     </div>
                 </div>
 
@@ -305,7 +352,7 @@ class PostDev extends Component {
                         <button className="btn btn-secundary" onClick={() => this.setState({ modalEliminar: false })}>No</button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </div >
 
 
 

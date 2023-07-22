@@ -25,21 +25,20 @@ button {
   justify-content: center;
 }
 
-.main .table-dev {
-  align-items: center;
- 
+.main table {
+  /* align-items: center; */
   margin: 1%;
 }
 
 .add-dev-form {
   font-size: 20px;
   color: #000000;
-  
+
   text-align: left;
   float: left;
   padding: 5px;
   margin: 5px;
-  
+
   width: 95%;
 }
 
@@ -50,9 +49,14 @@ button {
 }
 
 .add-dev-form label {
-  font-size:15px;
+  font-size: 15px;
   vertical-align: middle;
   margin-right: 2px;
   margin-left: 25px;
   display: inline;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
 }
