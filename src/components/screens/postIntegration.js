@@ -46,12 +46,6 @@ class PostIntegration extends Component {
         })
     }
 
-    // handleFileChange = (e) => {
-    //     if (e.target.files) {
-    //         setFile(e.target.files[0]);
-    //     }
-    // };
-
 
     peticionPost = async () => {
         let postdeveloper = 'http://localhost:4000/developer/integration'

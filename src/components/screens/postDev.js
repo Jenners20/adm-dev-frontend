@@ -128,7 +128,7 @@ class PostDev extends Component {
             <div className="main">
                 <Navbar />
                 <br /><br /><br />
-                <p>Desarrolladores</p>
+                <center><h1>Desarrolladores</h1></center>
                 <button className="btn btn-success" onClick={() => { this.setState({ form: null, tipoModal: 'insertar' }); this.modalInsertar() }}>Agregar Desarrollador</button>
                 <br /><br />
                 <div className="data">
@@ -252,8 +252,6 @@ class PostDev extends Component {
                     </div>
                 </div>
 
-
-
                 <Modal isOpen={this.state.modalInsertar}>
                     <ModalHeader style={{ display: 'block' }}>
                         <span style={{ float: 'right' }} onClick={() => this.modalInsertar()}>x</span>
@@ -325,8 +323,6 @@ class PostDev extends Component {
                             <label htmlFor="capital_bursatil">ECRTI </label>
                             <input className="form-check-input" type="checkbox" name="developer" id="developer" onChange={this.handleChange} value={form ? form.independent : ''} />
 
-
-
                         </div>
                     </ModalBody>
 
@@ -342,7 +338,6 @@ class PostDev extends Component {
                     </ModalFooter>
                 </Modal>
 
-
                 <Modal isOpen={this.state.modalEliminar}>
                     <ModalBody>
                         Estás seguro que deseas eliminar a la empresa {form && form.nombre}
@@ -353,9 +348,6 @@ class PostDev extends Component {
                     </ModalFooter>
                 </Modal>
             </div >
-
-
-
         );
     }
 }
